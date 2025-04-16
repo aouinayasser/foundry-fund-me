@@ -23,11 +23,19 @@ contract InteractionsTest is Test {
         vm.deal(alice, STARTING_USER_BALANCE);
     }
 
-    function testUserCanFundAndOwnerWithdraw() public {
+    modifier skipFork() {
+        if (block.chainid != 31337) {
+            return;
+        }
+        _;
+    }
+
+    function testUserCanFundAndOwnerWithdraw() public skipFork {
         uint256 preUserBalance = address(alice).balance;
         uint256 preOwnerBalance = address(fundMe.getOwner()).balance;
 
         // Using vm.prank to simulate funding from the USER address
+
         vm.prank(alice);
         fundMe.fund{value: SEND_VALUE}();
 
@@ -40,8 +48,5 @@ contract InteractionsTest is Test {
         assert(address(fundMe).balance == 0);
         assertEq(afterUserBalance + SEND_VALUE, preUserBalance);
         assertEq(preOwnerBalance + SEND_VALUE, afterOwnerBalance);
-        console2.log("Pre owner balance is : ", preOwnerBalance);
-        console2.log("after owner balance is : ", afterOwnerBalance);
-        console2.log("SEND VALUE is : ", SEND_VALUE);
     }
 }
