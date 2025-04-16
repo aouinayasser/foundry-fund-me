@@ -15,3 +15,5 @@ docs/
 
 broadcast/
 lib/
+forge-std
+foundry-devops
