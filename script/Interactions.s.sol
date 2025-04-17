@@ -2,7 +2,6 @@
 pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
-import {console2} from "forge-std/console2.sol";
 import {FundMe} from "../src/FundMe.sol";
 import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol";
 
@@ -13,7 +12,6 @@ contract FundFundMe is Script {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).fund{value: SEND_VALUE}();
         vm.stopBroadcast();
-        console2.log("Funded FundMe with %s", SEND_VALUE);
     }
 
     function run() external {
@@ -30,7 +28,6 @@ contract WithdrawFundMe is Script {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).withdraw();
         vm.stopBroadcast();
-        console2.log("Withdraw FundMe balance!");
     }
 
     function run() external {

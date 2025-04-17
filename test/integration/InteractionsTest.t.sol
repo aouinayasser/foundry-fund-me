@@ -6,7 +6,6 @@ import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 import {FundFundMe, WithdrawFundMe} from "../../script/Interactions.s.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {Test} from "forge-std/Test.sol";
-import {console2} from "forge-std/console2.sol";
 
 contract InteractionsTest is Test {
     FundMe public fundMe;
