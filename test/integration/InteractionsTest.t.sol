@@ -6,6 +6,7 @@ import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 import {FundFundMe, WithdrawFundMe} from "../../script/Interactions.s.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {Test} from "forge-std/Test.sol";
+import {console2} from "forge-std/console2.sol";
 
 contract InteractionsTest is Test {
     FundMe public fundMe;
@@ -29,12 +30,12 @@ contract InteractionsTest is Test {
         _;
     }
 
-    function testUserCanFundAndOwnerWithdraw() public skipFork {
+    function testUserCanFundAndOwnerWithdraw() public {
         uint256 preUserBalance = address(alice).balance;
         uint256 preOwnerBalance = address(fundMe.getOwner()).balance;
+        uint256 originalFundMeBalance = address(fundMe).balance; // This is for people running forked tests!
 
         // Using vm.prank to simulate funding from the USER address
-
         vm.prank(alice);
         fundMe.fund{value: SEND_VALUE}();
 
@@ -46,6 +47,9 @@ contract InteractionsTest is Test {
 
         assert(address(fundMe).balance == 0);
         assertEq(afterUserBalance + SEND_VALUE, preUserBalance);
-        assertEq(preOwnerBalance + SEND_VALUE, afterOwnerBalance);
+        assertEq(
+            preOwnerBalance + SEND_VALUE + originalFundMeBalance,
+            afterOwnerBalance
+        );
     }
 }
